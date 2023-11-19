@@ -1,0 +1,430 @@
+
+Setting environment for using XAMPP for Windows.
+sveda@LAPTOP-VPIN2M5C c:\xampp
+# mysql.exe -h localhost -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 15
+Server version: 10.4.27-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| test               |
+| vedant             |
++--------------------+
+6 rows in set (0.001 sec)
+
+MariaDB [(none)]> use vedant;
+Database changed
+MariaDB [vedant]> show tables;
++----------------------+
+| Tables_in_vedant     |
++----------------------+
+| client_master        |
+| client_master1       |
+| client_master3       |
+| clinfo               |
+| dept                 |
+| empl                 |
+| f2                   |
+| f3                   |
+| hon                  |
+| hon2                 |
+| kypan                |
+| moon                 |
+| muthoot              |
+| off                  |
+| prd                  |
+| pro_mas              |
+| prod_master          |
+| prod_master3         |
+| sales_order          |
+| sales_order3         |
+| sales_order_details  |
+| sales_order_details5 |
+| staff                |
++----------------------+
+23 rows in set (0.001 sec)
+
+MariaDB [vedant]> select * from dept;
++--------+---------+-----------+
+| deptno | dname   | location  |
++--------+---------+-----------+
+|      1 | shubham | panvel    |
+|      2 | sachin  | goa       |
+|      3 | sagar   | assam     |
+|      4 | kushi   | noida     |
+|      5 | nikhil  | gurgoan   |
+|      6 | sachin  | thane     |
+|      7 | akshay  | kashmir   |
+|      8 | ashu    | jodpur    |
+|      9 | omkar   | rajasthan |
++--------+---------+-----------+
+9 rows in set (0.000 sec)
+
+MariaDB [vedant]> select * from empl;
++-------+----------+------+---------+------------+--------+------+------------+--------+
+| empno | emp_name | job  | mang_id | hire_date  | salary | comm | join_date  | deptno |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+|     1 | joy      | cse  |     101 | 2010-01-10 |  15000 |  500 | 2010-01-20 |      1 |
+|     2 | sam      | abm  |     102 | 2011-05-15 |  13500 | 1010 | 2011-06-01 |      2 |
+|     3 | vikas    | bm   |     104 | 2002-07-12 |  28000 | 2080 | 2002-08-01 |      3 |
+|     4 | john     | cse  |     101 | 2010-01-10 |  25000 | 1500 | 2010-01-20 |      4 |
+|     5 | adu      | it   |     105 | 2005-04-25 |  13500 | 1010 | 2005-05-01 |      5 |
+|     6 | shruti   | hr   |     106 | 2012-06-22 |  22000 | 1080 | 2012-06-01 |      6 |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+6 rows in set (0.000 sec)
+
+MariaDB [vedant]> select empno from empl where min(salary) group by salary;
+ERROR 1111 (HY000): Invalid use of group function
+MariaDB [vedant]> select empno,min(salary) from empl group by empno;
++-------+-------------+
+| empno | min(salary) |
++-------+-------------+
+|     1 |       15000 |
+|     2 |       13500 |
+|     3 |       28000 |
+|     4 |       25000 |
+|     5 |       13500 |
+|     6 |       22000 |
++-------+-------------+
+6 rows in set (0.000 sec)
+
+MariaDB [vedant]> select empno,min(salary) from empl group by empno having min(salary)>10000;
++-------+-------------+
+| empno | min(salary) |
++-------+-------------+
+|     1 |       15000 |
+|     2 |       13500 |
+|     3 |       28000 |
+|     4 |       25000 |
+|     5 |       13500 |
+|     6 |       22000 |
++-------+-------------+
+6 rows in set (0.000 sec)
+
+MariaDB [vedant]> select empno,min(salary) from empl group by empno having min(salary)>15000;
++-------+-------------+
+| empno | min(salary) |
++-------+-------------+
+|     3 |       28000 |
+|     4 |       25000 |
+|     6 |       22000 |
++-------+-------------+
+3 rows in set (0.000 sec)
+
+MariaDB [vedant]> select emp_name,hire_date from empl where hire_date between '2012-06-22' and '2010-01-10';
+Empty set (0.000 sec)
+
+MariaDB [vedant]> select emp_name,hire_date from empl where hire_date between '2012-06-22' and '2010-01-10' order by hire_date;
+Empty set (0.000 sec)
+
+MariaDB [vedant]> select emp_name,hire_date from empl where hire_date between '2010' and '2012' order by hire_date;
+Empty set, 2 warnings (0.000 sec)
+
+MariaDB [vedant]> select emp_name,hire_date from empl where hire_date between '2010-01-10' and '2012-06-22' order by hire_date;
++----------+------------+
+| emp_name | hire_date  |
++----------+------------+
+| joy      | 2010-01-10 |
+| john     | 2010-01-10 |
+| sam      | 2011-05-15 |
+| shruti   | 2012-06-22 |
++----------+------------+
+4 rows in set (0.000 sec)
+
+MariaDB [vedant]> select emp_name,hire_date from empl where job in ('cse','bm');
++----------+------------+
+| emp_name | hire_date  |
++----------+------------+
+| joy      | 2010-01-10 |
+| vikas    | 2002-07-12 |
+| john     | 2010-01-10 |
++----------+------------+
+3 rows in set (0.000 sec)
+
+MariaDB [vedant]> select emp_name,hire_date,job from empl where job in ('cse','bm');
++----------+------------+------+
+| emp_name | hire_date  | job  |
++----------+------------+------+
+| joy      | 2010-01-10 | cse  |
+| vikas    | 2002-07-12 | bm   |
+| john     | 2010-01-10 | cse  |
++----------+------------+------+
+3 rows in set (0.000 sec)
+
+MariaDB [vedant]> select * from empl where hire_date > 2002-07-12;
++-------+----------+------+---------+------------+--------+------+------------+--------+
+| empno | emp_name | job  | mang_id | hire_date  | salary | comm | join_date  | deptno |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+|     1 | joy      | cse  |     101 | 2010-01-10 |  15000 |  500 | 2010-01-20 |      1 |
+|     2 | sam      | abm  |     102 | 2011-05-15 |  13500 | 1010 | 2011-06-01 |      2 |
+|     3 | vikas    | bm   |     104 | 2002-07-12 |  28000 | 2080 | 2002-08-01 |      3 |
+|     4 | john     | cse  |     101 | 2010-01-10 |  25000 | 1500 | 2010-01-20 |      4 |
+|     5 | adu      | it   |     105 | 2005-04-25 |  13500 | 1010 | 2005-05-01 |      5 |
+|     6 | shruti   | hr   |     106 | 2012-06-22 |  22000 | 1080 | 2012-06-01 |      6 |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+6 rows in set, 1 warning (0.000 sec)
+
+MariaDB [vedant]> select * from empl where hire_date > 2005-04-25;
++-------+----------+------+---------+------------+--------+------+------------+--------+
+| empno | emp_name | job  | mang_id | hire_date  | salary | comm | join_date  | deptno |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+|     1 | joy      | cse  |     101 | 2010-01-10 |  15000 |  500 | 2010-01-20 |      1 |
+|     2 | sam      | abm  |     102 | 2011-05-15 |  13500 | 1010 | 2011-06-01 |      2 |
+|     3 | vikas    | bm   |     104 | 2002-07-12 |  28000 | 2080 | 2002-08-01 |      3 |
+|     4 | john     | cse  |     101 | 2010-01-10 |  25000 | 1500 | 2010-01-20 |      4 |
+|     5 | adu      | it   |     105 | 2005-04-25 |  13500 | 1010 | 2005-05-01 |      5 |
+|     6 | shruti   | hr   |     106 | 2012-06-22 |  22000 | 1080 | 2012-06-01 |      6 |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+6 rows in set, 1 warning (0.000 sec)
+
+MariaDB [vedant]> select * from empl where hire_date > '2005-04-25';
++-------+----------+------+---------+------------+--------+------+------------+--------+
+| empno | emp_name | job  | mang_id | hire_date  | salary | comm | join_date  | deptno |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+|     1 | joy      | cse  |     101 | 2010-01-10 |  15000 |  500 | 2010-01-20 |      1 |
+|     2 | sam      | abm  |     102 | 2011-05-15 |  13500 | 1010 | 2011-06-01 |      2 |
+|     4 | john     | cse  |     101 | 2010-01-10 |  25000 | 1500 | 2010-01-20 |      4 |
+|     6 | shruti   | hr   |     106 | 2012-06-22 |  22000 | 1080 | 2012-06-01 |      6 |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+4 rows in set (0.000 sec)
+
+MariaDB [vedant]> select * from empl where mang_id in (101,106);
++-------+----------+------+---------+------------+--------+------+------------+--------+
+| empno | emp_name | job  | mang_id | hire_date  | salary | comm | join_date  | deptno |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+|     1 | joy      | cse  |     101 | 2010-01-10 |  15000 |  500 | 2010-01-20 |      1 |
+|     4 | john     | cse  |     101 | 2010-01-10 |  25000 | 1500 | 2010-01-20 |      4 |
+|     6 | shruti   | hr   |     106 | 2012-06-22 |  22000 | 1080 | 2012-06-01 |      6 |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+3 rows in set (0.000 sec)
+
+MariaDB [vedant]> select emp_name,salary,comm,hire_date from empl where salary < 15000;
++----------+--------+------+------------+
+| emp_name | salary | comm | hire_date  |
++----------+--------+------+------------+
+| sam      |  13500 | 1010 | 2011-05-15 |
+| adu      |  13500 | 1010 | 2005-04-25 |
++----------+--------+------+------------+
+2 rows in set (0.001 sec)
+
+MariaDB [vedant]> select job,max(salary)-min(salary) difference from empl where max(salary) between 10000 and 22000;
+ERROR 1111 (HY000): Invalid use of group function
+MariaDB [vedant]> select job,max(salary),min(salary) difference from empl where max(salary) between 10000 and 22000;
+ERROR 1111 (HY000): Invalid use of group function
+MariaDB [vedant]> select job,empno,max(salary),min(salary) from empl group by empno having max(salary)>15000;
++------+-------+-------------+-------------+
+| job  | empno | max(salary) | min(salary) |
++------+-------+-------------+-------------+
+| bm   |     3 |       28000 |       28000 |
+| cse  |     4 |       25000 |       25000 |
+| hr   |     6 |       22000 |       22000 |
++------+-------+-------------+-------------+
+3 rows in set (0.001 sec)
+
+MariaDB [vedant]> select job, max(salary)-min(salary) as difference from empl where salary between 15000 and 25000 group by job;
++------+------------+
+| job  | difference |
++------+------------+
+| cse  |      10000 |
+| hr   |          0 |
++------+------------+
+2 rows in set (0.001 sec)
+
+MariaDB [vedant]> select * from empl;
++-------+----------+------+---------+------------+--------+------+------------+--------+
+| empno | emp_name | job  | mang_id | hire_date  | salary | comm | join_date  | deptno |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+|     1 | joy      | cse  |     101 | 2010-01-10 |  15000 |  500 | 2010-01-20 |      1 |
+|     2 | sam      | abm  |     102 | 2011-05-15 |  13500 | 1010 | 2011-06-01 |      2 |
+|     3 | vikas    | bm   |     104 | 2002-07-12 |  28000 | 2080 | 2002-08-01 |      3 |
+|     4 | john     | cse  |     101 | 2010-01-10 |  25000 | 1500 | 2010-01-20 |      4 |
+|     5 | adu      | it   |     105 | 2005-04-25 |  13500 | 1010 | 2005-05-01 |      5 |
+|     6 | shruti   | hr   |     106 | 2012-06-22 |  22000 | 1080 | 2012-06-01 |      6 |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+6 rows in set (0.000 sec)
+
+MariaDB [vedant]> select job, max(salary)-min(salary) as difference from empl where salary between 22000 and 28000 group by job;
++------+------------+
+| job  | difference |
++------+------------+
+| bm   |          0 |
+| cse  |          0 |
+| hr   |          0 |
++------+------------+
+3 rows in set (0.001 sec)
+
+MariaDB [vedant]> select job, max(salary)-min(salary) as difference from empl where salary between 22000 and 28000 group by job order by asc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'asc' at line 1
+MariaDB [vedant]> select job, max(salary)-min(salary) as difference from empl where salary between 22000 and 28000 group by job order by mang_id ;
++------+------------+
+| job  | difference |
++------+------------+
+| cse  |          0 |
+| bm   |          0 |
+| hr   |          0 |
++------+------------+
+3 rows in set (0.001 sec)
+
+MariaDB [vedant]> select job,mang_id, max(salary)-min(salary) as difference from empl where salary between 22000 and 28000 group by job order by mang_id ;
++------+---------+------------+
+| job  | mang_id | difference |
++------+---------+------------+
+| cse  |     101 |          0 |
+| bm   |     104 |          0 |
+| hr   |     106 |          0 |
++------+---------+------------+
+3 rows in set (0.000 sec)
+
+MariaDB [vedant]> select job,mang_id, max(salary)-min(salary) as difference from empl where salary between 22000 and 28000 group by job order by mang_id desc ;
++------+---------+------------+
+| job  | mang_id | difference |
++------+---------+------------+
+| hr   |     106 |          0 |
+| bm   |     104 |          0 |
+| cse  |     101 |          0 |
++------+---------+------------+
+3 rows in set (0.001 sec)
+
+MariaDB [vedant]> select emp_name,salary, round(salary, -3) from empl;
++----------+--------+-------------------+
+| emp_name | salary | round(salary, -3) |
++----------+--------+-------------------+
+| joy      |  15000 |             15000 |
+| sam      |  13500 |             14000 |
+| vikas    |  28000 |             28000 |
+| john     |  25000 |             25000 |
+| adu      |  13500 |             14000 |
+| shruti   |  22000 |             22000 |
++----------+--------+-------------------+
+6 rows in set (0.010 sec)
+
+MariaDB [vedant]> select emp_name,salary, round(salary, -2) from empl;
++----------+--------+-------------------+
+| emp_name | salary | round(salary, -2) |
++----------+--------+-------------------+
+| joy      |  15000 |             15000 |
+| sam      |  13500 |             13500 |
+| vikas    |  28000 |             28000 |
+| john     |  25000 |             25000 |
+| adu      |  13500 |             13500 |
+| shruti   |  22000 |             22000 |
++----------+--------+-------------------+
+6 rows in set (0.000 sec)
+
+MariaDB [vedant]> select emp_name,salary, round(salary, -4) from empl;
++----------+--------+-------------------+
+| emp_name | salary | round(salary, -4) |
++----------+--------+-------------------+
+| joy      |  15000 |             20000 |
+| sam      |  13500 |             10000 |
+| vikas    |  28000 |             30000 |
+| john     |  25000 |             30000 |
+| adu      |  13500 |             10000 |
+| shruti   |  22000 |             20000 |
++----------+--------+-------------------+
+6 rows in set (0.000 sec)
+
+MariaDB [vedant]> select emp_name,salary, round(salary, -5) from empl;
++----------+--------+-------------------+
+| emp_name | salary | round(salary, -5) |
++----------+--------+-------------------+
+| joy      |  15000 |                 0 |
+| sam      |  13500 |                 0 |
+| vikas    |  28000 |                 0 |
+| john     |  25000 |                 0 |
+| adu      |  13500 |                 0 |
+| shruti   |  22000 |                 0 |
++----------+--------+-------------------+
+6 rows in set (0.000 sec)
+
+MariaDB [vedant]> select * from empl order by job dsce;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'dsce' at line 1
+MariaDB [vedant]> select * from empl order by job desc;
++-------+----------+------+---------+------------+--------+------+------------+--------+
+| empno | emp_name | job  | mang_id | hire_date  | salary | comm | join_date  | deptno |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+|     5 | adu      | it   |     105 | 2005-04-25 |  13500 | 1010 | 2005-05-01 |      5 |
+|     6 | shruti   | hr   |     106 | 2012-06-22 |  22000 | 1080 | 2012-06-01 |      6 |
+|     1 | joy      | cse  |     101 | 2010-01-10 |  15000 |  500 | 2010-01-20 |      1 |
+|     4 | john     | cse  |     101 | 2010-01-10 |  25000 | 1500 | 2010-01-20 |      4 |
+|     3 | vikas    | bm   |     104 | 2002-07-12 |  28000 | 2080 | 2002-08-01 |      3 |
+|     2 | sam      | abm  |     102 | 2011-05-15 |  13500 | 1010 | 2011-06-01 |      2 |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+6 rows in set (0.000 sec)
+
+MariaDB [vedant]> select * from empl order by job ;
++-------+----------+------+---------+------------+--------+------+------------+--------+
+| empno | emp_name | job  | mang_id | hire_date  | salary | comm | join_date  | deptno |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+|     2 | sam      | abm  |     102 | 2011-05-15 |  13500 | 1010 | 2011-06-01 |      2 |
+|     3 | vikas    | bm   |     104 | 2002-07-12 |  28000 | 2080 | 2002-08-01 |      3 |
+|     1 | joy      | cse  |     101 | 2010-01-10 |  15000 |  500 | 2010-01-20 |      1 |
+|     4 | john     | cse  |     101 | 2010-01-10 |  25000 | 1500 | 2010-01-20 |      4 |
+|     6 | shruti   | hr   |     106 | 2012-06-22 |  22000 | 1080 | 2012-06-01 |      6 |
+|     5 | adu      | it   |     105 | 2005-04-25 |  13500 | 1010 | 2005-05-01 |      5 |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+6 rows in set (0.000 sec)
+
+MariaDB [vedant]> select emp_name ,from empl where first_name like 's%';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'from empl where first_name like 's%'' at line 1
+MariaDB [vedant]> select emp_name, from empl where first_name like 's%';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'from empl where first_name like 's%'' at line 1
+MariaDB [vedant]> select emp_name, from empl where first_name like 'S%';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'from empl where first_name like 'S%'' at line 1
+MariaDB [vedant]> select emp_name, from empl where emp_name like 'S%';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'from empl where emp_name like 'S%'' at line 1
+MariaDB [vedant]> select * from empl where emp_name like 'S%';
++-------+----------+------+---------+------------+--------+------+------------+--------+
+| empno | emp_name | job  | mang_id | hire_date  | salary | comm | join_date  | deptno |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+|     2 | sam      | abm  |     102 | 2011-05-15 |  13500 | 1010 | 2011-06-01 |      2 |
+|     6 | shruti   | hr   |     106 | 2012-06-22 |  22000 | 1080 | 2012-06-01 |      6 |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+2 rows in set (0.010 sec)
+
+MariaDB [vedant]> select emp_name, from empl where emp_name like 'S%'and emp_name like '%i';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'from empl where emp_name like 'S%'and emp_name like '%i'' at line 1
+MariaDB [vedant]> select * from empl where emp_name like 'S%'and emp_name like '%i';
++-------+----------+------+---------+------------+--------+------+------------+--------+
+| empno | emp_name | job  | mang_id | hire_date  | salary | comm | join_date  | deptno |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+|     6 | shruti   | hr   |     106 | 2012-06-22 |  22000 | 1080 | 2012-06-01 |      6 |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+1 row in set (0.010 sec)
+
+MariaDB [vedant]> select * from empl where emp_name like 'j%'and emp_name like '%n';
++-------+----------+------+---------+------------+--------+------+------------+--------+
+| empno | emp_name | job  | mang_id | hire_date  | salary | comm | join_date  | deptno |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+|     4 | john     | cse  |     101 | 2010-01-10 |  25000 | 1500 | 2010-01-20 |      4 |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+1 row in set (0.000 sec)
+
+MariaDB [vedant]> select * from empl where emp_name like 's%'and emp_name like 'j%';
+Empty set (0.000 sec)
+
+MariaDB [vedant]> select * from empl where emp_name like 's%', emp_name like 'j%';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' emp_name like 'j%'' at line 1
+MariaDB [vedant]> select * from empl where emp_name like 's%'or emp_name like 'j%';
++-------+----------+------+---------+------------+--------+------+------------+--------+
+| empno | emp_name | job  | mang_id | hire_date  | salary | comm | join_date  | deptno |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+|     1 | joy      | cse  |     101 | 2010-01-10 |  15000 |  500 | 2010-01-20 |      1 |
+|     2 | sam      | abm  |     102 | 2011-05-15 |  13500 | 1010 | 2011-06-01 |      2 |
+|     4 | john     | cse  |     101 | 2010-01-10 |  25000 | 1500 | 2010-01-20 |      4 |
+|     6 | shruti   | hr   |     106 | 2012-06-22 |  22000 | 1080 | 2012-06-01 |      6 |
++-------+----------+------+---------+------------+--------+------+------------+--------+
+4 rows in set (0.000 sec)
+
+MariaDB [vedant]>
